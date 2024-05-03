@@ -1,0 +1,34 @@
+server:
+  port: 1419
+# 配置数据源
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/theyellowriver?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1415
+  data:
+    redis:
+      host: localhost
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  application:
+    name: service-oss
+mybatis-plus:
+  #打印日志
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# application.yml
+wechat:
+  appid:
+  secret:
+aliyun:
+  oss:
+    file:
+      keyid:
+      keysecret:
+      bucketname:
+      endpoint:

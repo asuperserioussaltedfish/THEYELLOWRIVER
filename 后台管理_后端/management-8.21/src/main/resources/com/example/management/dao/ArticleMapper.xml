@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--MyBatis配置文件-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.management.dao.ArticleMapper">
+
+    <resultMap id="articleMap" type="com.example.management.pojo.Article">
+        <id column="id" property="id" />
+        <result column="author_id" property="authorId"/>
+        <result column="comment_counts" property="commentCounts"/>
+        <result column="create_date" property="createDate"/>
+        <result column="summary" property="summary"/>
+        <result column="title" property="title"/>
+        <result column="view_counts" property="viewCounts"/>
+        <result column="weight" property="weight"/>
+        <result column="body_id" property="bodyId"/>
+        <result column="category_id" property="categoryId"/>
+    </resultMap>
+    <select id="listArchives" parameterType="List" resultType="com.example.management.dao.dos.Archives">
+        select FROM_UNIXTIME(create_date/1000,'%Y') as year,
+
+        FROM_UNIXTIME(create_date/1000,'%m')as month,
+
+        count(*) as count
+        from article group by year,month order by year desc ,month desc
+    </select>
+
+    <select id="listArticle" parameterType="com.baomidou.mybatisplus.core.metadata.IPage" resultMap="articleMap">
+        select * from article
+        <where>
+            1 = 1
+            <if test="categoryId != null">
+                and  category_id = #{categoryId}
+            </if>
+            <if test="year != null and year.length>0 and month != null and month.length>0">
+                and ( FROM_UNIXTIME(create_date/1000,'%Y') = #{year} and FROM_UNIXTIME(create_date/1000,'%m') = #{month} )
+            </if>
+            <if test="tagId != null">
+                and id in (select article_id from article_tag where tag_id=#{tagId})
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+    <select id="userFavorites" resultType="java.lang.Long">
+        select article_id from user_favorites where user_id= #{userId}
+    </select>
+    <select id="fuzzyQueries" parameterType="List" resultType="java.lang.String" resultMap="articleMap">
+        select id,title from article where article.title like concat('%',#{body},'%') ;
+    </select>
+
+
+</mapper>

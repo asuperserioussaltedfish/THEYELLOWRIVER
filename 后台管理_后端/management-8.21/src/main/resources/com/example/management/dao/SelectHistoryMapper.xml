@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--MyBatis配置文件-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.management.dao.SelectHistoryMapper">
+    <resultMap id="articleMap" type="com.example.management.pojo.SelectHistory">
+        <id column="id" property="id" />
+        <result column="content" property="content"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+    <select id="selectContent" resultType="java.lang.String">
+        select content from search_history where user_id =#{id}
+    </select>
+
+
+</mapper>
